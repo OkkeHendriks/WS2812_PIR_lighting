@@ -25,8 +25,31 @@ CRGB            target_color        = CRGB::Beige;
 unsigned int    fade_speed          = 50;
 STATE           timer_state         = ON;
 int             off_event           = 0;
+int             fade_event          = 0;
 
 CRGB leds[LED_COUNT];                        // Led array
+
+// Deleting if one already started on that integer (id)
+void start_after_event(int& event, unsigned int timeout, void (* callback)())
+{
+  stop_event(event);
+  event = t.after(timeout, callback);
+}
+
+// Deleting if one already started on that integer (id)
+void start_every_event(int& event, void (* callback)())
+{
+   stop_event(event);
+   event = t.every(event, callback);
+}
+
+// Stop an event if active
+void stop_event(int& event)
+{
+  if ( event > 0 )
+    t.stop(event);
+    event = 0;
+}
 
 void setup()
 {
@@ -34,23 +57,10 @@ void setup()
   pinMode(SENSOR_PIN, INPUT);      // sets the SENSOR_PIN as input
   pinMode(DEBUG_LED_PIN, OUTPUT);  // sets the DEBUG_LED_PIN as output
 
-  t.every(1, process_fade);
-  
+  start_every_event(fade_event, process_fade);
   set_fade_target(CRGB::Beige, 128, 10);
 
-  blink_debug(3, 250);
-}
-
-void start_event(int& event, int time, void (* callback)())
-{
-  stop_event(event);
-  event = t.after(time, callback);
-}
-
-void stop_event(int& event)
-{
-  if ( event > 0 )
-    t.stop(event);
+  blink_debug(5, 50);
 }
 
 void loop()
@@ -59,7 +69,7 @@ void loop()
   {
     debug_on();
     set_fade_target(CRGB::Beige, 255, 20);
-    start_event(off_event, ON_TIME, turn_off);      
+    start_after_event(off_event, ON_TIME, turn_off);      
   }
   else
     debug_off();
