@@ -8,7 +8,7 @@
 #define SENSOR_PIN 8
 #define DEBUG_LED_PIN 13
 
-#define ON_TIME 20000     // [ms]
+#define ON_TIME 25000     // [ms]
 
 enum STATE {
   ON,
@@ -30,6 +30,7 @@ int             blend_event         = 0;
 int             red_event           = 0;
 int             green_event         = 0;
 int             blue_event          = 0;
+int             random_event        = 0;
 
 CRGB leds[LED_COUNT];
 byte blend_start_r[LED_COUNT];
@@ -76,8 +77,8 @@ void setup()
   setLEDs(leds, CRGB::Black);
   showLEDs();
   
-  set_fade(0, 5);
-  set_blend(CRGB::White, 5);
+  set_fade(255, 10);
+  set_blendRandom(50);
   
   blink_debug(5, 50);
 }
@@ -85,19 +86,25 @@ void setup()
 void set_red()
 {
   stop_event(red_event);
-  set_blend(CRGB::Red, 100);
+  set_blend(CRGB::Red, 30);
 }
 
 void set_green()
 {
   stop_event(green_event);
-  set_blend(CRGB::Green, 100);
+  set_blend(CRGB::Green, 30);
 }
 
 void set_blue()
 {
   stop_event(blue_event);
-  set_blend(CRGB::Blue, 100);
+  set_blend(CRGB::Blue, 30);
+}
+
+void set_random()
+{
+  stop_event(random_event);
+  set_blendRandom(30);
 }
 
 
@@ -111,6 +118,8 @@ void loop()
     start_after_event(blue_event, 1, set_blue);
     start_after_event(red_event, 2000, set_red);
     start_after_event(green_event, 5000, set_green);
+    start_after_event(random_event, 7500, set_random);
+    start_after_event(blue_event, 10000, set_blue);
    
     start_after_event(off_event, ON_TIME, turn_off);      
   }
@@ -135,6 +144,24 @@ void set_fade( byte to_brightness, unsigned int fade_speed)
 {
   target_brightness = to_brightness;
   start_every_event(fade_event, fade_speed, process_fade);
+}
+
+void set_blendRandom(unsigned int blend_speed)
+{
+  for ( int i = 0; i < LED_COUNT; ++i)
+  {
+    blend_current_r[i] = leds[i].r;
+    blend_current_g[i] = leds[i].g;
+    blend_current_b[i] = leds[i].b;
+    blend_start_r[i] = leds[i].r;
+    blend_start_g[i] = leds[i].g;
+    blend_start_b[i] = leds[i].b;
+    blend_target_r[i] = random8();
+    blend_target_g[i] = random8();
+    blend_target_b[i] = random8();
+  }
+  start_every_event(blend_event, blend_speed, process_blend);
+  current_blend_progress = 0;
 }
 
 void set_blend(CRGB target_color, unsigned int blend_speed)
@@ -245,6 +272,16 @@ void setLEDs(CRGB* set_leds, CRGB color)
 {
   for ( int i = 0; i < LED_COUNT; ++i )
     set_leds[i] = color;
+}
+
+void setLEDsRandom(CRGB* set_leds)
+{
+  for ( int i = 0; i < LED_COUNT; ++i )
+  {
+    set_leds[i].r = random8();
+    set_leds[i].g = random8();
+    set_leds[i].b = random8();
+  }
 }
 
 void showLEDs()
