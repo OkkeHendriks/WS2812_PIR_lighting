@@ -110,7 +110,7 @@ void loop()
   {
 
     debug_on();
-    set_fade(255, 200);
+    set_fade(255, 20);
 
     start_after_event(blue_event, 1, set_blue);
     start_after_event(red_event, 2000, set_red);
@@ -161,13 +161,10 @@ void set_blend(CRGB target_color, unsigned int blend_speed)
   
 void process_fade()
 {  
-  if (current_brightness == target_brightness)
-    return;
-  
   if(current_brightness < target_brightness)
     current_brightness++;
-  else
-    current_brightness--;     
+  else if (current_brightness > target_brightness)
+    current_brightness--;  
   
   apply_blend(); 
   for ( int i = 0; i < LED_COUNT; ++i )
