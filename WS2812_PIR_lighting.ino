@@ -78,7 +78,7 @@ void setup()
   showLEDs();
   
   set_fade(255, 10);
-  set_blendRandom(50);
+  set_blendRandom(30);
   
   blink_debug(5, 50);
 }
@@ -86,19 +86,19 @@ void setup()
 void set_red()
 {
   stop_event(red_event);
-  set_blend(CRGB::Red, 30);
+  set_blend(CRGB::Red, 20);
 }
 
 void set_green()
 {
   stop_event(green_event);
-  set_blend(CRGB::Green, 30);
+  set_blend(CRGB::Green, 20);
 }
 
 void set_blue()
 {
   stop_event(blue_event);
-  set_blend(CRGB::Blue, 30);
+  set_blend(CRGB::Blue, 20);
 }
 
 void set_random()
@@ -236,7 +236,7 @@ void process_blend()
 //  Serial.print(blend_current_b[0]);
 //  Serial.println("");
   
-  if (current_blend_progress == 255)
+  if (current_blend_progress == 100)
     return;
     
   current_blend_progress++;
@@ -245,9 +245,9 @@ void process_blend()
     int r = (int)blend_target_r[i] - (int)blend_start_r[i];
     int g = (int)blend_target_g[i] - (int)blend_start_g[i];
     int b = (int)blend_target_b[i] - (int)blend_start_b[i];
-    blend_current_r[i] = blend_start_r[i] + (r*current_blend_progress)/255;
-    blend_current_g[i] = blend_start_g[i] + (g*current_blend_progress)/255;
-    blend_current_b[i] = blend_start_b[i] + (b*current_blend_progress)/255; 
+    blend_current_r[i] = blend_start_r[i] + (r*current_blend_progress)/100;
+    blend_current_g[i] = blend_start_g[i] + (g*current_blend_progress)/100;
+    blend_current_b[i] = blend_start_b[i] + (b*current_blend_progress)/100; 
   }
 }
 
