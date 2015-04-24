@@ -116,10 +116,10 @@ void loop()
     set_fade(255, 200);
 
     start_after_event(blue_event, 1, set_blue);
-    start_after_event(red_event, 2000, set_red);
-    start_after_event(green_event, 5000, set_green);
-    start_after_event(random_event, 7500, set_random);
-    start_after_event(blue_event, 10000, set_blue);
+    start_after_event(red_event, 5000, set_red);
+    start_after_event(green_event, 10000, set_green);
+    start_after_event(random_event, 15000, set_random);
+    start_after_event(blue_event, 20000, set_blue);
    
     start_after_event(off_event, ON_TIME, turn_off);      
   }
@@ -132,7 +132,7 @@ void loop()
 void turn_off()
 {
   stop_event(off_event);
-  set_fade(0, 40);
+  set_fade(0, 100);
 }
 
 bool check_sensor()
