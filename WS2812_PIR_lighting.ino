@@ -84,21 +84,18 @@ void setup()
 
 void set_red()
 {
-  blink_debug(2, 50);
   stop_event(red_event);
   set_blend(CRGB::Red, 100);
 }
 
 void set_green()
 {
-  blink_debug(3, 50);
   stop_event(green_event);
   set_blend(CRGB::Green, 100);
 }
 
 void set_blue()
 {
-  blink_debug(4, 50);
   stop_event(blue_event);
   set_blend(CRGB::Blue, 100);
 }
@@ -109,7 +106,7 @@ void loop()
   if(check_sensor())
   {
     debug_on();
-    set_fade(255, 20);
+    set_fade(255, 200);
 
     start_after_event(blue_event, 1, set_blue);
     start_after_event(red_event, 2000, set_red);
@@ -126,7 +123,7 @@ void loop()
 void turn_off()
 {
   stop_event(off_event);
-  set_fade(0, 20);
+  set_fade(0, 40);
 }
 
 bool check_sensor()
@@ -154,8 +151,8 @@ void set_blend(CRGB target_color, unsigned int blend_speed)
     blend_target_g[i] = target_color.g;
     blend_target_b[i] = target_color.b;
   }
-  current_blend_progress = 0;
   start_every_event(blend_event, blend_speed, process_blend);
+  current_blend_progress = 0;
 }
   
 void process_fade()
