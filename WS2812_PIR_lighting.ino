@@ -141,9 +141,9 @@ void set_blend(CRGB target_color, unsigned int blend_speed)
 {
   for ( int i = 0; i < LED_COUNT; ++i)
   {
-    blend_current_r[i] = 0;
-    blend_current_g[i] = 0;
-    blend_current_b[i] = 0;
+    blend_current_r[i] = leds[i].r;
+    blend_current_g[i] = leds[i].g;
+    blend_current_b[i] = leds[i].b;
     blend_start_r[i] = leds[i].r;
     blend_start_g[i] = leds[i].g;
     blend_start_b[i] = leds[i].b;
