@@ -29,6 +29,7 @@ int             fade_event          = 0;
 int             blend_event         = 0;
 int             red_event           = 0;
 int             green_event         = 0;
+int             blue_event          = 0;
 
 CRGB leds[LED_COUNT];
 byte blend_start_r[LED_COUNT];
@@ -83,35 +84,42 @@ void setup()
 
 void set_red()
 {
-  blink_debug(5, 50);
+  blink_debug(2, 50);
   stop_event(red_event);
-  set_blend(CRGB::Red, 50);
+  set_blend(CRGB::Red, 100);
 }
 
 void set_green()
 {
-  blink_debug(5, 150);
+  blink_debug(3, 50);
   stop_event(green_event);
-  set_blend(CRGB::Green, 50);
+  set_blend(CRGB::Green, 100);
+}
+
+void set_blue()
+{
+  blink_debug(4, 50);
+  stop_event(blue_event);
+  set_blend(CRGB::Blue, 100);
 }
 
 
 void loop()
-{
-  bool sensor = check_sensor();
-  if(sensor)
+{ 
+  if(check_sensor() && off_event == 0)
   {
+
     debug_on();
-    set_fade(255, 20);
-    set_blend(CRGB::Blue, 50);
-    
+    set_fade(255, 200);
+
+    start_after_event(blue_event, 1, set_blue);
     start_after_event(red_event, 2000, set_red);
     start_after_event(green_event, 5000, set_green);
-    
+   
     start_after_event(off_event, ON_TIME, turn_off);      
   }
   else
-    debug_off();
+     debug_off();
   
   t.update();     
 }
