@@ -113,7 +113,7 @@ void loop()
   if(check_sensor())
   {
     debug_on();
-    set_fade(255, 200);
+    set_fade(128, 200);
 
     start_after_event(blue_event, 1, set_blue);
     start_after_event(red_event, 5000, set_red);
