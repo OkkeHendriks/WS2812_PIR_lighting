@@ -106,9 +106,8 @@ void set_blue()
 
 void loop()
 { 
-  if(check_sensor() && off_event == 0)
+  if(check_sensor())
   {
-
     debug_on();
     set_fade(255, 20);
 
